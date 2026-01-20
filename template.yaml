@@ -1,0 +1,60 @@
+
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Basic Serverless CRUD API using AWS SAM
+
+Globals:
+  Function:
+    Runtime: python3.11
+    Timeout: 10
+    Environment:
+      Variables:
+        TABLE_NAME: !Ref ItemsTable
+
+Resources:
+  ItemsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: ItemsTable
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+
+  ApiFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: app.lambda_handler
+      CodeUri: src/
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref ItemsTable
+      Events:
+        Create:
+          Type: Api
+          Properties:
+            Path: /items
+            Method: post
+        Read:
+          Type: Api
+          Properties:
+            Path: /items/{id}
+            Method: get
+        Update:
+          Type: Api
+          Properties:
+            Path: /items/{id}
+            Method: put
+        Delete:
+          Type: Api
+          Properties:
+            Path: /items/{id}
+            Method: delete
+
+Outputs:
+  ApiUrl:
+    Description: API Gateway endpoint URL
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/items"
