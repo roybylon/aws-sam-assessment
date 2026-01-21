@@ -103,7 +103,7 @@ Use `curl` or Postman with the API Gateway URL provided after deployment.
 
 Example:
 ```bash
-curl -X POST https://<api-id>.execute-api.<region>.amazonaws.com/Prod/items \
+curl -X POST https://<api-id>.execute-api.<region>.amazonaws.com/qa/items \
   -H "Content-Type: application/json" \
   -d '{"name": "Sample Item"}'
 ```
@@ -145,8 +145,6 @@ The deployment requires the following IAM permissions:
 - S3: Create buckets and upload artifacts
 - API Gateway: Full access
 - DynamoDB: Table creation and access
-
-> **Tip:** For assessment or testing purposes, using AWS-managed policies like `AWSCloudFormationFullAccess`, `AWSLambdaFullAccess`, and `AmazonDynamoDBFullAccess` simplifies setup. For production, apply **least privilege**.
 
 ---
 
