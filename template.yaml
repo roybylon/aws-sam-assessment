@@ -15,7 +15,7 @@ Resources:
   ItemsTable:
     Type: AWS::DynamoDB::Table
     Properties:
-      TableName: ItemsTable
+      TableName: ItemsTable-${AWS::StackName}
       BillingMode: PAY_PER_REQUEST
       AttributeDefinitions:
         - AttributeName: id
@@ -31,7 +31,7 @@ Resources:
       CodeUri: src/
       Policies:
         - DynamoDBCrudPolicy:
-            TableName: !Ref ItemsTable
+            TableName: !Ref ItemsTable-${AWS::StackName}
       Events:
         Create:
           Type: Api
