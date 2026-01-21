@@ -49,3 +49,23 @@ jobs:
         run: |
           sam build
           sam deploy --no-confirm-changeset --no-fail-on-empty-changeset --stack-name cicd-stackv --capabilities CAPABILITY_IAM --resolve-s3
+
+      - name: Run Post-Deployment Tests
+        run: |
+          echo "Running automated API tests..."
+          API_URL=$(aws cloudformation describe-stacks \
+            --stack-name cicd-stack \
+            --query "Stacks[0].Outputs[?OutputKey=='ApiUrl'].OutputValue" \
+            --output text)
+
+          # Example: POST request test
+          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" -X POST "$API_URL/items" \
+            -H "Content-Type: application/json" \
+            -d '{"name":"Test","description":"CI/CD test"}')
+
+          if [ "$RESPONSE" -ne 201 ]; then
+            echo "Test failed: expected HTTP 201, got $RESPONSE"
+            exit 1
+          fi
+          
+          echo "All tests passed"
