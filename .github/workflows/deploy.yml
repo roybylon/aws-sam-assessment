@@ -48,4 +48,4 @@ jobs:
       - name: Build and Deploy
         run: |
           sam build
-          sam deploy --no-confirm-changeset --no-fail-on-empty-changeset --stack-name cicd-stack --capabilities CAPABILITY_IAM --resolve-s3
+          sam deploy --no-confirm-changeset --no-fail-on-empty-changeset --stack-name cicd-stackv2 --capabilities CAPABILITY_IAM --resolve-s3
