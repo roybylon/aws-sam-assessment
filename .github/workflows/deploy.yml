@@ -54,7 +54,7 @@ jobs:
         run: |
           echo "Running automated API tests..."
           API_URL=$(aws cloudformation describe-stacks \
-            --stack-name cicd-stack \
+            --stack-name cicd-stackv \
             --query "Stacks[0].Outputs[?OutputKey=='ApiUrl'].OutputValue" \
             --output text)
 
