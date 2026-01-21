@@ -31,7 +31,7 @@ Resources:
       CodeUri: src/
       Policies:
         - DynamoDBCrudPolicy:
-            TableName: !Ref ItemsTable-${AWS::StackName}
+            TableName: !Ref ItemsTable
       Events:
         Create:
           Type: Api
