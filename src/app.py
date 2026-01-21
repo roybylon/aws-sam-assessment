@@ -3,10 +3,8 @@ import json
 import os
 import boto3
 import uuid
-
 dynamodb = boto3.resource('dynamodb')
 table = dynamodb.Table(os.environ['TABLE_NAME'])
-
 def lambda_handler(event, context):
     method = event['httpMethod']
 
