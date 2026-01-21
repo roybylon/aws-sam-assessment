@@ -1,4 +1,6 @@
 # AWS SAM Serverless CRUD API Project
+By Ayobami Tewogbade
+21/01/2026
 
 ## Table of Contents
 1. [Project Overview](#project-overview)  
@@ -9,7 +11,6 @@
 6. [IAM Permissions](#iam-permissions)  
 7. [Testing](#testing)  
 8. [File Structure](#file-structure)  
-9. [Future Improvements](#future-improvements)
 
 ---
 
@@ -184,10 +185,3 @@ aws-sam-assessment-/
 ```
 
 ---
-
-## Future Improvements
-
-- Add **unit tests** and integration tests for Lambda functions
-- Separate Lambda functions per CRUD operation
-- Add **staging and production stages** with separate stacks
-- Implement **envi
