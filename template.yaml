@@ -42,3 +42,8 @@ Resources:
       KeySchema:
         - AttributeName: id
           KeyType: HASH
+
+Outputs:
+  ApiUrl:
+    Description: "API Gateway endpoint URL"
+    Value: !Sub "https://${ApiFunctionApiGateway}.execute-api.${AWS::Region}.amazonaws.com/${StageName}"
