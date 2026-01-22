@@ -51,6 +51,7 @@ jobs:
           sam deploy --no-confirm-changeset --no-fail-on-empty-changeset --stack-name cicd-stackv --capabilities CAPABILITY_IAM --resolve-s3
 
       - name: Post-Deployment API Tests
+        shell: bash
         run: |
           echo "Running automated API tests..."
 
@@ -97,4 +98,4 @@ jobs:
           echo "Item verified in GET response"
 
           echo "All API tests passed successfully!"
-        shell: /usr/bin/bash
+
