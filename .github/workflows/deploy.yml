@@ -1,4 +1,3 @@
-
 name: Deploy Serverless App
 
 on:
@@ -58,12 +57,10 @@ jobs:
             --query "Stacks[0].Outputs[?OutputKey=='ApiUrl'].OutputValue" \
             --output text)
 
-          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" -X GET "$API_URL/items" \
-            -H "Content-Type: application/json" \
-            -d '{"name":"Test","description":"CI/CD test"}')
+          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" -X GET "$API_URL/items"
 
-          if [ "$RESPONSE" -ne 201 ]; then
-            echo "Test failed: expected HTTP 201, got $RESPONSE"
+          if [ "$RESPONSE" -ne 200 ]; then
+            echo "Test failed: expected HTTP 200, got $RESPONSE"
             exit 1
           fi
           
