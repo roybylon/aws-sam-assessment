@@ -58,8 +58,7 @@ jobs:
             --query "Stacks[0].Outputs[?OutputKey=='ApiUrl'].OutputValue" \
             --output text)
 
-          # Example: POST request test
-          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" -X POST "$API_URL/items" \
+          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" -X GET "$API_URL/items" \
             -H "Content-Type: application/json" \
             -d '{"name":"Test","description":"CI/CD test"}')
 
