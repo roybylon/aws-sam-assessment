@@ -50,19 +50,51 @@ jobs:
           sam build
           sam deploy --no-confirm-changeset --no-fail-on-empty-changeset --stack-name cicd-stackv --capabilities CAPABILITY_IAM --resolve-s3
 
-      - name: Run Post-Deployment Tests
+      - name: Post-Deployment API Tests
         run: |
           echo "Running automated API tests..."
+
+          # Get the API URL from CloudFormation outputs
           API_URL=$(aws cloudformation describe-stacks \
             --stack-name cicd-stackv \
             --query "Stacks[0].Outputs[?OutputKey=='ApiUrl'].OutputValue" \
             --output text)
 
-          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" -X GET "$API_URL/items"
+          echo "API URL: $API_URL"
 
-          if [ "$RESPONSE" -ne 200 ]; then
-            echo "Test failed: expected HTTP 200, got $RESPONSE"
+          # ----------------------
+          # Test 1: POST /items
+          # ----------------------
+          POST_RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" -X POST "$API_URL/items" \
+            -H "Content-Type: application/json" \
+            -d "{\"id\":\"test123\",\"name\":\"Test Item\",\"description\":\"CI/CD test\"}")
+
+          if [ "$POST_RESPONSE" -ne 201 ]; then
+            echo "POST /items failed: expected 201, got $POST_RESPONSE"
             exit 1
           fi
-          
-          echo "All tests passed"
+          echo "POST /items passed (HTTP $POST_RESPONSE)"
+
+          # ----------------------
+          # Test 2: GET /items
+          # ----------------------
+          GET_RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" -X GET "$API_URL/items")
+
+          if [ "$GET_RESPONSE" -ne 200 ]; then
+            echo "GET /items failed: expected 200, got $GET_RESPONSE"
+            exit 1
+          fi
+          echo "GET /items passed (HTTP $GET_RESPONSE)"
+
+          # ----------------------
+          # Optional: check GET response body for the item
+          # ----------------------
+          ITEM_PRESENT=$(curl -s -X GET "$API_URL/items" | grep "test123")
+          if [ -z "$ITEM_PRESENT" ]; then
+            echo "GET /items did not return the expected item"
+            exit 1
+          fi
+          echo "Item verified in GET response"
+
+          echo "All API tests passed successfully!"
+        shell: /usr/bin/bash
