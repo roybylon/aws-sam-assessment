@@ -1,6 +1,5 @@
 # AWS SAM Serverless CRUD API Project
-By Ayobami Tewogbade
-21/01/2026
+
 
 ## Table of Contents
 1. [Project Overview](#project-overview)  
